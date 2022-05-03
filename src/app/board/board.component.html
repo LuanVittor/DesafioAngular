@@ -1,0 +1,55 @@
+<nb-layout>
+  <nb-layout-column>
+    <div>
+      <h1>Put your names below to start:</h1>
+      <br />
+      <div>
+        <h2 class="teste" >Name of player one (X):</h2>
+        <input nbInput (keyup)="definePlayer1($event)">
+        <h2>Name of player two (O):</h2>
+        <input nbInput (keyup)="definePlayer2($event)">
+      </div>
+    </div>
+
+    <br/>
+
+    <button class="startGame" nbButton outline status="danger" *ngIf="player1 !== '' && player2 !== ''" (click)="newGame()">Start new game</button>
+
+    <br/>
+    <br/>
+
+    <h1>Game History:</h1>
+
+    <app-table [history]="gamesHistory"></app-table>
+  </nb-layout-column>
+  <!-- starts the second half of the screen -->
+  <nb-layout-column>
+    <h2 *ngIf="readyToStart" >Current Player: {{ currentPlayer }} </h2>
+    <h1 *ngIf="winner">{{ winner }} won the game!</h1>
+    <h1 *ngIf="tied"> The game is a tie</h1>
+
+    <main *ngIf="readyToStart && !finishGame">
+      <app-square class="square"
+        *ngFor="let val of squares; let i = index"
+        [value]="val"
+        [disabled]="false"
+        [winnerButton]="false"
+        (click)="makeMove(i)"
+      >
+      </app-square>
+    </main>
+    <!-- if the game is finished he starts show the same table with the buttons disabled -->
+    <main style="text-align: center;" *ngIf="readyToStart && finishGame">
+      <app-square
+        *ngFor="let val of squares; let i = index"
+        [value]="val"
+        [disabled]="true"
+        [winnerButton]="paint(i)"
+      >
+      </app-square>
+    </main>
+  </nb-layout-column>
+</nb-layout>
+
+
+
